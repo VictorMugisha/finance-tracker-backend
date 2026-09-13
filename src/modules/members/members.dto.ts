@@ -4,7 +4,12 @@ export const groupRoleSchema = z.enum(["LEADER", "ASSISTANT", "ACCOUNTANT", "MEM
 
 export const createMemberSchema = z.object({
   name: z.string({ error: "Name is required" }).trim().min(1),
-  phone: z.string().trim().nullable().optional(),
+  phone: z
+    .string()
+    .trim()
+    .regex(/^07\d{8}$/, "Phone must be 10 digits starting with 07")
+    .nullable()
+    .optional(),
   role: groupRoleSchema.nullable().optional(),
 })
 

@@ -2,7 +2,7 @@ import { compare } from "bcryptjs"
 import jwt from "jsonwebtoken"
 import { ApiError } from "../../shared/errors/api-error.js"
 import type { AuthUser } from "../../shared/types/auth-user.js"
-import type { LoginInput, LoginResponse } from "./auth.dto.js"
+import type { CheckPhoneInput, CheckPhoneResponse, LoginInput, LoginResponse } from "./auth.dto.js"
 import { authRepository, type UserWithPermissions } from "./auth.repository.js"
 
 function requireJwtSecret(): string {
@@ -54,4 +54,18 @@ export async function getCurrentUser(userId: string): Promise<AuthUser> {
     throw new ApiError(401, "User not found")
   }
   return toAuthUser(user)
+}
+
+export async function checkPhone(input: CheckPhoneInput): Promise<CheckPhoneResponse> {
+  const user = await authRepository.findByPhone(input.phone)
+
+  if (!user) {
+    return { exists: false, isActive: false, name: null }
+  }
+
+  return {
+    exists: true,
+    isActive: user.isActive && (user.member === null || user.member.isActive),
+    name: user.name,
+  }
 }

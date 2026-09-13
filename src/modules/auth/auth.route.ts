@@ -70,6 +70,53 @@ authRouter.post("/login", authController.login)
 
 /**
  * @openapi
+ * /auth/check-phone:
+ *   post:
+ *     summary: Check if a phone number is registered
+ *     description: Used by the two-step login flow to verify a phone before asking for a password.
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [phone]
+ *             properties:
+ *               phone:
+ *                 type: string
+ *                 example: "0799303355"
+ *     responses:
+ *       200:
+ *         description: Phone check result
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 statusCode:
+ *                   type: number
+ *                 status:
+ *                   type: string
+ *                 meta:
+ *                   type: object
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     exists:
+ *                       type: boolean
+ *                     isActive:
+ *                       type: boolean
+ *                     name:
+ *                       type: string
+ *                       nullable: true
+ *                 message:
+ *                   type: string
+ */
+authRouter.post("/check-phone", authController.checkPhone)
+
+/**
+ * @openapi
  * /auth/me:
  *   get:
  *     summary: Get current user

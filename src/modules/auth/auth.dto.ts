@@ -6,9 +6,20 @@ export const loginSchema = z.object({
   password: z.string({ error: "Password is required" }).min(1),
 })
 
+export const checkPhoneSchema = z.object({
+  phone: z.string({ error: "Phone is required" }).min(1),
+})
+
 export type LoginInput = z.infer<typeof loginSchema>
+export type CheckPhoneInput = z.infer<typeof checkPhoneSchema>
 
 export interface LoginResponse {
   token: string
   user: AuthUser
+}
+
+export interface CheckPhoneResponse {
+  exists: boolean
+  isActive: boolean
+  name: string | null
 }

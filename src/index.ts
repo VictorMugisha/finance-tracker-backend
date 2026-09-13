@@ -1,9 +1,9 @@
-import 'dotenv/config'
-import cors from 'cors'
-import express from 'express'
-import swaggerUi from 'swagger-ui-express'
-import { prisma } from './lib/prisma.js'
-import { swaggerSpec } from './swagger.js'
+import "dotenv/config"
+import cors from "cors"
+import express from "express"
+import swaggerUi from "swagger-ui-express"
+import { prisma } from "./lib/prisma.js"
+import { swaggerSpec } from "./swagger.js"
 
 const app = express()
 const PORT = Number(process.env.PORT ?? 4000)
@@ -11,8 +11,8 @@ const PORT = Number(process.env.PORT ?? 4000)
 app.use(cors())
 app.use(express.json())
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
-app.get('/api-docs.json', (_req, res) => {
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec))
+app.get("/api-docs.json", (_req, res) => {
   res.json(swaggerSpec)
 })
 
@@ -52,12 +52,12 @@ app.get('/api-docs.json', (_req, res) => {
  *                   type: string
  *                   example: unreachable
  */
-app.get('/health', async (_req, res) => {
+app.get("/health", async (_req, res) => {
   try {
     await prisma.$queryRaw`SELECT 1`
-    res.json({ status: 'ok', database: 'connected' })
+    res.json({ status: "ok", database: "connected" })
   } catch {
-    res.status(503).json({ status: 'error', database: 'unreachable' })
+    res.status(503).json({ status: "error", database: "unreachable" })
   }
 })
 
@@ -74,9 +74,9 @@ async function start(): Promise<void> {
   const dbConnected = await checkDatabase()
 
   if (dbConnected) {
-    console.log('Database: connected')
+    console.log("Database: connected")
   } else {
-    console.error('Database: NOT connected')
+    console.error("Database: NOT connected")
   }
 
   app.listen(PORT, () => {

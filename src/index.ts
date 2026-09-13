@@ -2,8 +2,10 @@ import "dotenv/config"
 import cors from "cors"
 import express from "express"
 import swaggerUi from "swagger-ui-express"
-import { prisma } from "./lib/prisma.js"
-import { swaggerSpec } from "./swagger.js"
+import { authRouter } from "./modules/auth/auth.route.js"
+import { prisma } from "./shared/db/prisma.js"
+import { swaggerSpec } from "./shared/docs/swagger.js"
+import { errorMiddleware } from "./shared/middlewares/error.middleware.js"
 
 const app = express()
 const PORT = Number(process.env.PORT ?? 4000)
@@ -60,6 +62,10 @@ app.get("/health", async (_req, res) => {
     res.status(503).json({ status: "error", database: "unreachable" })
   }
 })
+
+app.use("/auth", authRouter)
+
+app.use(errorMiddleware)
 
 async function checkDatabase(): Promise<boolean> {
   try {

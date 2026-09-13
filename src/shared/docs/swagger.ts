@@ -14,7 +14,19 @@ const options: swaggerJsdoc.Options = {
         description: "Local development",
       },
     ],
-    tags: [{ name: "Health", description: "Operational health checks" }],
+    tags: [
+      { name: "Health", description: "Operational health checks" },
+      { name: "Auth", description: "Authentication" },
+    ],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+        },
+      },
+    },
   },
   apis: ["./src/**/*.ts"],
 }

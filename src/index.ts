@@ -3,7 +3,10 @@ import cors from "cors"
 import express from "express"
 import swaggerUi from "swagger-ui-express"
 import { authRouter } from "./modules/auth/auth.route.js"
+import { assignmentsRouter } from "./modules/assignments/assignments.route.js"
+import { contributionsRouter } from "./modules/contributions/contributions.route.js"
 import { membersRouter } from "./modules/members/members.route.js"
+import { paymentsRouter } from "./modules/payments/payments.route.js"
 import { prisma } from "./shared/db/prisma.js"
 import { swaggerSpec } from "./shared/docs/swagger.js"
 import { sendFail, sendSuccess } from "./shared/http/response.js"
@@ -81,6 +84,9 @@ app.get("/health", async (_req, res) => {
 
 app.use("/auth", authRouter)
 app.use("/members", membersRouter)
+app.use("/contributions", contributionsRouter)
+app.use("/contributions/:contributionId/assignments", assignmentsRouter)
+app.use("/payments", paymentsRouter)
 
 app.use(errorMiddleware)
 

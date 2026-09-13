@@ -18,6 +18,9 @@ const options: swaggerJsdoc.Options = {
       { name: "Health", description: "Operational health checks" },
       { name: "Auth", description: "Authentication" },
       { name: "Members", description: "Group participants" },
+      { name: "Contributions", description: "Contribution rounds" },
+      { name: "Assignments", description: "Per-member contribution requirements" },
+      { name: "Payments", description: "Individual deposits" },
     ],
     components: {
       securitySchemes: {

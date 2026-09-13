@@ -10,7 +10,10 @@ const PERMISSIONS: { key: string; description: string }[] = [
   { key: "contributions:create", description: "Create contributions" },
   { key: "contributions:read", description: "View contributions" },
   { key: "contributions:update", description: "Update contributions" },
+  { key: "assignments:write", description: "Create and update contribution assignments" },
   { key: "payments:record", description: "Record payments" },
+  { key: "payments:read", description: "View payments" },
+  { key: "payments:update", description: "Correct payments" },
   { key: "expenses:record", description: "Record expenses" },
   { key: "reports:view", description: "View reports" },
 ]

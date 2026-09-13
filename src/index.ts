@@ -3,8 +3,10 @@ import cors from "cors"
 import express from "express"
 import swaggerUi from "swagger-ui-express"
 import { authRouter } from "./modules/auth/auth.route.js"
+import { membersRouter } from "./modules/members/members.route.js"
 import { prisma } from "./shared/db/prisma.js"
 import { swaggerSpec } from "./shared/docs/swagger.js"
+import { sendFail, sendSuccess } from "./shared/http/response.js"
 import { errorMiddleware } from "./shared/middlewares/error.middleware.js"
 
 const app = express()
@@ -34,12 +36,20 @@ app.get("/api-docs.json", (_req, res) => {
  *             schema:
  *               type: object
  *               properties:
+ *                 statusCode:
+ *                   type: number
  *                 status:
  *                   type: string
- *                   example: ok
- *                 database:
+ *                 meta:
+ *                   type: object
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     database:
+ *                       type: string
+ *                       example: connected
+ *                 message:
  *                   type: string
- *                   example: connected
  *       503:
  *         description: Database unreachable
  *         content:
@@ -47,23 +57,30 @@ app.get("/api-docs.json", (_req, res) => {
  *             schema:
  *               type: object
  *               properties:
+ *                 statusCode:
+ *                   type: number
  *                 status:
  *                   type: string
- *                   example: error
- *                 database:
+ *                 meta:
+ *                   type: object
+ *                   nullable: true
+ *                 data:
+ *                   type: object
+ *                   nullable: true
+ *                 message:
  *                   type: string
- *                   example: unreachable
  */
 app.get("/health", async (_req, res) => {
   try {
     await prisma.$queryRaw`SELECT 1`
-    res.json({ status: "ok", database: "connected" })
+    sendSuccess(res, 200, "Service is healthy", { database: "connected" })
   } catch {
-    res.status(503).json({ status: "error", database: "unreachable" })
+    sendFail(res, 503, "Database is unreachable")
   }
 })
 
 app.use("/auth", authRouter)
+app.use("/members", membersRouter)
 
 app.use(errorMiddleware)
 

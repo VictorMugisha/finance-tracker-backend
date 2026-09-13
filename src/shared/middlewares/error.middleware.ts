@@ -1,6 +1,7 @@
 import type { NextFunction, Request, Response } from "express"
 import { ZodError } from "zod"
 import { ApiError } from "../errors/api-error.js"
+import { sendFail } from "../http/response.js"
 
 function isHttpError(err: unknown): err is { status: number; message?: string } {
   return (
@@ -18,20 +19,21 @@ export function errorMiddleware(
   _next: NextFunction
 ): void {
   if (err instanceof ApiError) {
-    res.status(err.status).json({ message: err.message })
+    sendFail(res, err.status, err.message)
     return
   }
 
   if (err instanceof ZodError) {
-    res.status(400).json({ message: "Validation failed", issues: err.issues })
+    const message = err.issues.map((issue) => issue.message).join(", ")
+    sendFail(res, 400, message || "Validation failed")
     return
   }
 
   if (isHttpError(err)) {
-    res.status(err.status).json({ message: err.message ?? "Request error" })
+    sendFail(res, err.status, err.message ?? "Request error")
     return
   }
 
   console.error(err)
-  res.status(500).json({ message: "Internal server error" })
+  sendFail(res, 500, "Internal server error")
 }

@@ -33,25 +33,36 @@ export const authRouter = Router()
  *             schema:
  *               type: object
  *               properties:
- *                 token:
+ *                 statusCode:
+ *                   type: number
+ *                 status:
  *                   type: string
- *                 user:
+ *                 meta:
+ *                   type: object
+ *                 data:
  *                   type: object
  *                   properties:
- *                     id:
+ *                     token:
  *                       type: string
- *                     name:
- *                       type: string
- *                     phone:
- *                       type: string
- *                     isAdmin:
- *                       type: boolean
- *                     role:
- *                       type: string
- *                     permissions:
- *                       type: array
- *                       items:
- *                         type: string
+ *                     user:
+ *                       type: object
+ *                       properties:
+ *                         id:
+ *                           type: string
+ *                         name:
+ *                           type: string
+ *                         phone:
+ *                           type: string
+ *                         isAdmin:
+ *                           type: boolean
+ *                         role:
+ *                           type: string
+ *                         permissions:
+ *                           type: array
+ *                           items:
+ *                             type: string
+ *                 message:
+ *                   type: string
  *       401:
  *         description: Invalid credentials or inactive account
  */
@@ -74,8 +85,19 @@ authRouter.post("/login", authController.login)
  *             schema:
  *               type: object
  *               properties:
- *                 user:
+ *                 statusCode:
+ *                   type: number
+ *                 status:
+ *                   type: string
+ *                 meta:
  *                   type: object
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     user:
+ *                       type: object
+ *                 message:
+ *                   type: string
  *       401:
  *         description: Unauthorized
  */

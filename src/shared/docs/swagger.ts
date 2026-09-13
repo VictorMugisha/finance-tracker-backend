@@ -17,6 +17,7 @@ const options: swaggerJsdoc.Options = {
     tags: [
       { name: "Health", description: "Operational health checks" },
       { name: "Auth", description: "Authentication" },
+      { name: "Members", description: "Group participants" },
     ],
     components: {
       securitySchemes: {
@@ -24,6 +25,36 @@ const options: swaggerJsdoc.Options = {
           type: "http",
           scheme: "bearer",
           bearerFormat: "JWT",
+        },
+      },
+      schemas: {
+        Member: {
+          type: "object",
+          properties: {
+            id: { type: "string" },
+            name: { type: "string" },
+            phone: { type: "string", nullable: true },
+            role: {
+              type: "string",
+              enum: ["LEADER", "ASSISTANT", "ACCOUNTANT", "MEMBER"],
+              nullable: true,
+            },
+            isActive: { type: "boolean" },
+            createdAt: { type: "string", format: "date-time" },
+            user: {
+              type: "object",
+              nullable: true,
+              properties: {
+                id: { type: "string" },
+                name: { type: "string" },
+                phone: { type: "string" },
+                isAdmin: { type: "boolean" },
+                isActive: { type: "boolean" },
+                memberId: { type: "string", nullable: true },
+                createdAt: { type: "string", format: "date-time" },
+              },
+            },
+          },
         },
       },
     },

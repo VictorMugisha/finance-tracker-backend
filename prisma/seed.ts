@@ -15,6 +15,8 @@ const PERMISSIONS: { key: string; description: string }[] = [
   { key: "payments:read", description: "View payments" },
   { key: "payments:update", description: "Correct payments" },
   { key: "expenses:record", description: "Record expenses" },
+  { key: "expenses:read", description: "View expenses" },
+  { key: "expenses:update", description: "Correct expenses" },
   { key: "reports:view", description: "View reports" },
 ]
 

@@ -5,6 +5,7 @@ import swaggerUi from "swagger-ui-express"
 import { authRouter } from "./modules/auth/auth.route.js"
 import { assignmentsRouter } from "./modules/assignments/assignments.route.js"
 import { contributionsRouter } from "./modules/contributions/contributions.route.js"
+import { expensesRouter } from "./modules/expenses/expenses.route.js"
 import { membersRouter } from "./modules/members/members.route.js"
 import { paymentsRouter } from "./modules/payments/payments.route.js"
 import { prisma } from "./shared/db/prisma.js"
@@ -87,6 +88,7 @@ app.use("/members", membersRouter)
 app.use("/contributions", contributionsRouter)
 app.use("/contributions/:contributionId/assignments", assignmentsRouter)
 app.use("/payments", paymentsRouter)
+app.use("/expenses", expensesRouter)
 
 app.use(errorMiddleware)
 

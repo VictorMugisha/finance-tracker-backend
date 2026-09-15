@@ -29,6 +29,7 @@ function toContributionDto(
     createdAt: contribution.createdAt.toISOString(),
     totalCollected: totalCollected.toString(),
     totalRequired: totalRequired.toString(),
+    totalDisbursed: totalDisbursed.toString(),
     net: totalCollected.minus(totalDisbursed).toString(),
   }
 }

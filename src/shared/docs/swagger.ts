@@ -22,6 +22,7 @@ const options: swaggerJsdoc.Options = {
       { name: "Assignments", description: "Per-member contribution requirements" },
       { name: "Payments", description: "Individual deposits" },
       { name: "Expenses", description: "Group spending" },
+      { name: "Stats", description: "Dashboard statistics" },
     ],
     components: {
       securitySchemes: {

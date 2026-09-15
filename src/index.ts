@@ -8,6 +8,7 @@ import { contributionsRouter } from "./modules/contributions/contributions.route
 import { expensesRouter } from "./modules/expenses/expenses.route.js"
 import { membersRouter } from "./modules/members/members.route.js"
 import { paymentsRouter } from "./modules/payments/payments.route.js"
+import { statsRouter } from "./modules/stats/stats.route.js"
 import { prisma } from "./shared/db/prisma.js"
 import { swaggerSpec } from "./shared/docs/swagger.js"
 import { sendFail, sendSuccess } from "./shared/http/response.js"
@@ -89,6 +90,7 @@ app.use("/contributions", contributionsRouter)
 app.use("/contributions/:contributionId/assignments", assignmentsRouter)
 app.use("/payments", paymentsRouter)
 app.use("/expenses", expensesRouter)
+app.use("/stats", statsRouter)
 
 app.use(errorMiddleware)
 

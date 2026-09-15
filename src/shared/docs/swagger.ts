@@ -23,6 +23,8 @@ const options: swaggerJsdoc.Options = {
       { name: "Payments", description: "Individual deposits" },
       { name: "Expenses", description: "Group spending" },
       { name: "Stats", description: "Dashboard statistics" },
+      { name: "Users", description: "User accounts and permissions" },
+      { name: "Permissions", description: "Available permission keys" },
     ],
     components: {
       securitySchemes: {

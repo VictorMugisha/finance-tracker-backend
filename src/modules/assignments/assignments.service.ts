@@ -1,6 +1,8 @@
 import { Prisma } from "../../generated/prisma/client.js"
 import { ApiError } from "../../shared/errors/api-error.js"
 import type {
+  AssignBulkInput,
+  AssignBulkResult,
   AssignmentDto,
   CreateAssignmentInput,
   UpdateAssignmentInput,
@@ -82,4 +84,32 @@ export async function remove(id: string): Promise<AssignmentDto> {
 
   const assignment = await assignmentsRepository.remove(id)
   return toAssignmentDto(assignment)
+}
+
+export async function assignBulk(
+  contributionId: string,
+  input: AssignBulkInput
+): Promise<AssignBulkResult> {
+  const contribution = await assignmentsRepository.getContribution(contributionId)
+  if (!contribution) {
+    throw new ApiError(404, "Contribution not found")
+  }
+  if (contribution.type !== "TARGETED") {
+    throw new ApiError(400, "Assignments are only allowed on TARGETED contributions")
+  }
+  if (contribution.status === "CLOSED") {
+    throw new ApiError(400, "Cannot change assignments on a CLOSED contribution")
+  }
+
+  const memberIds = [...new Set(input.memberIds)]
+
+  const activeMembers = await assignmentsRepository.listActiveMembersByIds(memberIds)
+  if (activeMembers.length !== memberIds.length) {
+    throw new ApiError(404, "One or more members were not found or are inactive")
+  }
+
+  const requiredAmount = new Prisma.Decimal(input.amount)
+  await assignmentsRepository.upsertAssignments(contributionId, memberIds, requiredAmount)
+
+  return { assigned: memberIds.length }
 }

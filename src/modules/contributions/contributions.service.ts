@@ -134,6 +134,19 @@ export async function close(id: string): Promise<ContributionDto> {
   return getById(id)
 }
 
+export async function reopen(id: string): Promise<ContributionDto> {
+  const existing = await contributionsRepository.findById(id)
+  if (!existing) {
+    throw new ApiError(404, "Contribution not found")
+  }
+  if (existing.status !== "CLOSED") {
+    throw new ApiError(400, "Contribution is not closed")
+  }
+
+  await contributionsRepository.reopen(id)
+  return getById(id)
+}
+
 export async function getReport(id: string): Promise<ContributionReportResponse> {
   const contribution = await contributionsRepository.findById(id)
   if (!contribution) {

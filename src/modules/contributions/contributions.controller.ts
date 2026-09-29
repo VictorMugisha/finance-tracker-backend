@@ -1,5 +1,7 @@
 import type { Request, Response } from "express"
 import { sendSuccess } from "../../shared/http/response.js"
+import { assignBulkSchema } from "../assignments/assignments.dto.js"
+import * as assignmentsService from "../assignments/assignments.service.js"
 import {
   createContributionSchema,
   listContributionsQuerySchema,
@@ -38,6 +40,17 @@ export async function update(req: Request<{ id: string }>, res: Response): Promi
 export async function close(req: Request<{ id: string }>, res: Response): Promise<void> {
   const contribution = await contributionsService.close(req.params.id)
   sendSuccess(res, 200, "Contribution closed successfully", contribution)
+}
+
+export async function reopen(req: Request<{ id: string }>, res: Response): Promise<void> {
+  const contribution = await contributionsService.reopen(req.params.id)
+  sendSuccess(res, 200, "Contribution reopened successfully", contribution)
+}
+
+export async function assignBulk(req: Request<{ id: string }>, res: Response): Promise<void> {
+  const input = assignBulkSchema.parse(req.body)
+  const result = await assignmentsService.assignBulk(req.params.id, input)
+  sendSuccess(res, 200, "Members assigned successfully", result)
 }
 
 export async function report(req: Request<{ id: string }>, res: Response): Promise<void> {

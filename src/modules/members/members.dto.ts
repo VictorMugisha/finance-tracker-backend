@@ -10,7 +10,7 @@ export const createMemberSchema = z.object({
     .regex(/^07\d{8}$/, "Phone must be 10 digits starting with 07")
     .nullable()
     .optional(),
-  role: groupRoleSchema.nullable().optional(),
+  role: groupRoleSchema.optional().default("MEMBER"),
 })
 
 export const updateMemberSchema = createMemberSchema.partial().extend({

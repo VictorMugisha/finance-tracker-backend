@@ -48,6 +48,10 @@ async function close(id: string) {
   return prisma.contribution.update({ where: { id }, data: { status: "CLOSED" } })
 }
 
+async function reopen(id: string) {
+  return prisma.contribution.update({ where: { id }, data: { status: "OPEN" } })
+}
+
 async function getPaymentSums(contributionIds: string[]) {
   const grouped = await prisma.payment.groupBy({
     by: ["contributionId"],
@@ -115,6 +119,7 @@ export const contributionsRepository = {
   create,
   update,
   close,
+  reopen,
   getPaymentSums,
   getAssignmentSums,
   getExpenseSums,

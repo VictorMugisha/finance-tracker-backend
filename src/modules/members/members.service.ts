@@ -52,7 +52,7 @@ export async function create(input: CreateMemberInput): Promise<MemberDto> {
   const member = await membersRepository.create({
     name: input.name,
     phone: input.phone ?? null,
-    role: input.role ?? null,
+    role: input.role,
   })
   return toMemberDto(member)
 }

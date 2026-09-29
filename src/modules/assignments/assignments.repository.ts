@@ -33,6 +33,29 @@ async function findByContributionAndMember(contributionId: string, memberId: str
   })
 }
 
+async function listActiveMembersByIds(memberIds: string[]) {
+  return prisma.member.findMany({
+    where: { id: { in: memberIds }, isActive: true },
+    select: { id: true },
+  })
+}
+
+async function upsertAssignments(
+  contributionId: string,
+  memberIds: string[],
+  requiredAmount: Prisma.Decimal
+) {
+  await prisma.$transaction(
+    memberIds.map((memberId) =>
+      prisma.contributionAssignment.upsert({
+        where: { contributionId_memberId: { contributionId, memberId } },
+        update: { requiredAmount },
+        create: { contributionId, memberId, requiredAmount },
+      })
+    )
+  )
+}
+
 async function create(data: {
   contributionId: string
   memberId: string
@@ -70,4 +93,6 @@ export const assignmentsRepository = {
   create,
   update,
   remove,
+  listActiveMembersByIds,
+  upsertAssignments,
 }

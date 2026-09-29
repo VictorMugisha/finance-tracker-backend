@@ -20,7 +20,11 @@ async function findById(id: string) {
   })
 }
 
-async function create(data: { name: string; phone: string | null; role: GroupRoleValue | null }) {
+async function create(data: {
+  name: string
+  phone: string | null
+  role: GroupRoleValue | null
+}) {
   return prisma.member.create({
     data,
     include: memberInclude,

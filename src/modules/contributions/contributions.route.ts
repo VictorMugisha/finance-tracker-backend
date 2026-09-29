@@ -191,3 +191,67 @@ contributionsRouter.post(
   requirePermission("contributions:update"),
   contributionsController.close
 )
+
+/**
+ * @openapi
+ * /contributions/{id}/reopen:
+ *   post:
+ *     summary: Reopen a contribution
+ *     description: Reopens a CLOSED contribution so its assignments can be changed again.
+ *     tags: [Contributions]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Contribution reopened
+ */
+contributionsRouter.post(
+  "/:id/reopen",
+  requirePermission("contributions:update"),
+  contributionsController.reopen
+)
+
+/**
+ * @openapi
+ * /contributions/{id}/assign-bulk:
+ *   post:
+ *     summary: Assign a required amount to multiple members
+ *     description: Upserts a required amount for each given active member on a TARGETED contribution.
+ *     tags: [Assignments]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [memberIds, amount]
+ *             properties:
+ *               memberIds:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *               amount:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Members assigned
+ */
+contributionsRouter.post(
+  "/:id/assign-bulk",
+  requirePermission("assignments:write"),
+  contributionsController.assignBulk
+)

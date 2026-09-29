@@ -25,6 +25,7 @@ const options: swaggerJsdoc.Options = {
       { name: "Stats", description: "Dashboard statistics" },
       { name: "Users", description: "User accounts and permissions" },
       { name: "Permissions", description: "Available permission keys" },
+      { name: "Recurring", description: "Recurring contributions and periods" },
     ],
     components: {
       securitySchemes: {

@@ -27,10 +27,16 @@ function toContributionDto(
     deadline: contribution.deadline?.toISOString() ?? null,
     status: contribution.status,
     createdAt: contribution.createdAt.toISOString(),
+    recurringContributionId: contribution.recurringContributionId,
+    recurringPeriod: contribution.recurringPeriod ?? null,
+    periodLabel: contribution.periodLabel,
     totalCollected: totalCollected.toString(),
     totalRequired: totalRequired.toString(),
     totalDisbursed: totalDisbursed.toString(),
     net: totalCollected.minus(totalDisbursed).toString(),
+    outstanding: contribution.targetAmount
+      ? contribution.targetAmount.minus(totalDisbursed).toString()
+      : null,
   }
 }
 

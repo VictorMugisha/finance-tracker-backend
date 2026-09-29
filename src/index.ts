@@ -9,6 +9,7 @@ import { expensesRouter } from "./modules/expenses/expenses.route.js"
 import { membersRouter } from "./modules/members/members.route.js"
 import { paymentsRouter } from "./modules/payments/payments.route.js"
 import { permissionsRouter } from "./modules/permissions/permissions.route.js"
+import { recurringRouter } from "./modules/recurring-contributions/recurring-contributions.route.js"
 import { statsRouter } from "./modules/stats/stats.route.js"
 import { usersRouter } from "./modules/users/users.route.js"
 import { prisma } from "./shared/db/prisma.js"
@@ -90,6 +91,7 @@ app.use("/auth", authRouter)
 app.use("/members", membersRouter)
 app.use("/contributions", contributionsRouter)
 app.use("/contributions/:contributionId/assignments", assignmentsRouter)
+app.use("/recurring-contributions", recurringRouter)
 app.use("/payments", paymentsRouter)
 app.use("/expenses", expensesRouter)
 app.use("/stats", statsRouter)

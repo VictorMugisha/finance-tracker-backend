@@ -46,10 +46,14 @@ export interface ContributionDto {
   deadline: string | null
   status: "OPEN" | "CLOSED"
   createdAt: string
+  recurringContributionId: string | null
+  recurringPeriod: number | null
+  periodLabel: string | null
   totalCollected: string
   totalRequired: string
   totalDisbursed: string
   net: string
+  outstanding: string | null
 }
 
 export interface TargetedMemberReportItem {

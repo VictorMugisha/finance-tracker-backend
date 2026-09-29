@@ -34,6 +34,24 @@ enum ExpenseType {
   OTHER
 }
 
+enum RecurringPeriod {
+  WEEKLY
+  MONTHLY
+  QUARTERLY
+}
+
+model RecurringContribution {
+  id           String         @id @default(cuid())
+  title        String
+  description  String?
+  period       RecurringPeriod
+  targetAmount Decimal?
+  isClosed     Boolean        @default(false)
+  createdAt    DateTime       @default(now())
+
+  periods      Contribution[]
+}
+
 model Member {
   id        String     @id @default(cuid())
   name      String
@@ -57,6 +75,11 @@ model Contribution {
   deadline     DateTime?
   status       ContributionStatus @default(OPEN)
   createdAt    DateTime           @default(now())
+
+  recurringContributionId String?
+  recurringPeriod         Int?
+  periodLabel             String?
+  recurring               RecurringContribution? @relation(fields: [recurringContributionId], references: [id], onDelete: Cascade)
 
   assignments  ContributionAssignment[]
   payments     Payment[]

@@ -14,6 +14,7 @@ async function list(filters: {
 }) {
   return prisma.contribution.findMany({
     where: {
+      recurringContributionId: null,
       ...(filters.type ? { type: filters.type } : {}),
       ...(filters.status ? { status: filters.status } : {}),
       ...(filters.search ? { title: { contains: filters.search, mode: "insensitive" } } : {}),

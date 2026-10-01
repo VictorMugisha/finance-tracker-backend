@@ -29,7 +29,6 @@ function toContributionDto(
     createdAt: contribution.createdAt.toISOString(),
     recurringContributionId: contribution.recurringContributionId,
     recurringPeriod: contribution.recurringPeriod ?? null,
-    periodLabel: contribution.periodLabel,
     totalCollected: totalCollected.toString(),
     totalRequired: totalRequired.toString(),
     totalDisbursed: totalDisbursed.toString(),

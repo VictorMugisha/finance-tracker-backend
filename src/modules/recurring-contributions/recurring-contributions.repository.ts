@@ -73,7 +73,6 @@ async function createPeriod(data: {
   targetAmount: Prisma.Decimal | null
   recurringContributionId: string
   recurringPeriod: number
-  periodLabel: string | null
 }) {
   return prisma.contribution.create({
     data: { ...data, type: "TARGETED", status: "OPEN" },

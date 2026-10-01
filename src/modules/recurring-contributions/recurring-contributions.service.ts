@@ -12,10 +12,7 @@ import type {
   RolloverResult,
   UpdateRecurringInput,
 } from "./recurring-contributions.dto.js"
-import {
-  recurringRepository,
-  type RecurringRecord,
-} from "./recurring-contributions.repository.js"
+import { recurringRepository, type RecurringRecord } from "./recurring-contributions.repository.js"
 
 const ZERO = new Prisma.Decimal(0)
 
@@ -53,7 +50,6 @@ export async function create(input: CreateRecurringInput): Promise<RecurringCont
     targetAmount,
     recurringContributionId: recurring.id,
     recurringPeriod: 1,
-    periodLabel: null,
   })
 
   return { ...toRecurringDto(recurring), periodCount: 1 }
@@ -66,12 +62,17 @@ export async function getById(id: string): Promise<RecurringContributionDetailRe
   }
 
   const periods = await recurringRepository.getPeriods(id)
-  const periodDtos = await Promise.all(periods.map((period) => contributionsService.getById(period.id)))
+  const periodDtos = await Promise.all(
+    periods.map((period) => contributionsService.getById(period.id))
+  )
 
   return { recurring: toRecurringDto(recurring), periods: periodDtos }
 }
 
-export async function update(id: string, input: UpdateRecurringInput): Promise<RecurringContributionDto> {
+export async function update(
+  id: string,
+  input: UpdateRecurringInput
+): Promise<RecurringContributionDto> {
   const existing = await recurringRepository.findById(id)
   if (!existing) {
     throw new ApiError(404, "Recurring contribution not found")
@@ -107,12 +108,11 @@ export async function rollover(id: string, input: RolloverInput): Promise<Rollov
   const nextPeriod = (latest?.recurringPeriod ?? 0) + 1
 
   const newPeriod = await recurringRepository.createPeriod({
-    title: recurring.title,
+    title: input.title,
     description: recurring.description,
     targetAmount: recurring.targetAmount,
     recurringContributionId: id,
     recurringPeriod: nextPeriod,
-    periodLabel: input.label?.trim() ? input.label.trim() : null,
   })
 
   let assigned = 0
@@ -172,7 +172,9 @@ export async function report(id: string): Promise<RecurringReportResponse> {
   }
 
   const periods = await recurringRepository.getPeriods(id)
-  const periodDtos = await Promise.all(periods.map((period) => contributionsService.getById(period.id)))
+  const periodDtos = await Promise.all(
+    periods.map((period) => contributionsService.getById(period.id))
+  )
 
   const summaries: RecurringPeriodSummary[] = periodDtos.map((dto, index) => ({
     id: dto.id,

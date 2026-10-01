@@ -19,7 +19,7 @@ export const updateRecurringSchema = z.object({
 })
 
 export const rolloverSchema = z.object({
-  label: z.string().trim().nullable().optional(),
+  title: z.string({ error: "Title is required" }).trim().min(1),
 })
 
 export type CreateRecurringInput = z.infer<typeof createRecurringSchema>

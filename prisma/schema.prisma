@@ -78,7 +78,6 @@ model Contribution {
 
   recurringContributionId String?
   recurringPeriod         Int?
-  periodLabel             String?
   recurring               RecurringContribution? @relation(fields: [recurringContributionId], references: [id], onDelete: Cascade)
 
   assignments  ContributionAssignment[]
